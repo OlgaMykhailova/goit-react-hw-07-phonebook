@@ -1,10 +1,9 @@
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Notify } from 'notiflix';
-import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 
 import {
   Form,
@@ -28,21 +27,25 @@ export const ContactForm = () => {
   };
 
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = (values, actions) => {
     const newName = {
-      id: nanoid(),
+      createdAt: new Date(),
       name: values.name,
-      number: values.number,
+      phone: values.number,
     }
     const newContactNameNormalized = values.name.toLowerCase();
     const findContact = contacts.find(
       contact => contact.name.toLowerCase() === newContactNameNormalized
     );
+    const handleAddContact = (newName) => {
+      Notify.success(`${values.name} has been added to your contacts`);
+      dispatch(addContact(newName))
+    }
     findContact
       ? Notify.warning(`${values.name} is already in contacts`)
-      : dispatch(addContact(newName));
+      : handleAddContact(newName);
     actions.resetForm();
   };
 
