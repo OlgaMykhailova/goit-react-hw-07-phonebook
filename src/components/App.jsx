@@ -19,7 +19,7 @@ export const App = () => {
 
   return (
     <div className="container">
-      {error && Notify.warning(`${error}`)}
+      {error && Notify.failure(`${error}`)}
       {isLoading && !error && <h2>Loading...</h2>}
       <h1>Phonebook</h1>
       <ContactForm />
