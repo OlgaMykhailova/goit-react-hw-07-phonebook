@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/operations';
 import { selectContacts, selectIsLoading, selectError } from 'redux/selectors';
+import { Notify } from 'notiflix';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
@@ -18,7 +19,7 @@ export const App = () => {
 
   return (
     <div className="container">
-      {error && <h2>Error... {error}</h2>}
+      {error && Notify.warning(`${error}`)}
       {isLoading && !error && <h2>Loading...</h2>}
       <h1>Phonebook</h1>
       <ContactForm />
